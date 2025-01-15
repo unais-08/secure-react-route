@@ -1,0 +1,10 @@
+1 . installing all dependencies.
+2 . setuping Frontend and backend folder structure.
+3 . designing schema first. (Book schema remaining).
+4 . Design A signup and login page.
+5 . Add React Router.
+
+next tasks
+5.5 Protect Route handling.
+6 . Adding Global Context .
+7 . Conditional rendering for Navbar .
