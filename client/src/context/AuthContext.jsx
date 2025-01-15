@@ -2,9 +2,9 @@ import { createContext, useState } from "react";
 
 export const AuthContext = createContext("");
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/auth";
-
+const API_BASE_URL = "https://secure-react-route.onrender.com/api/auth";
+//  "http://localhost:8080/api/auth";
+console.log(API_BASE_URL);
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
