@@ -20,6 +20,9 @@ configureMiddlewares(app);
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/api/auth", authRouter);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+});
 app.use(errorHandler);
 ////connect to database and listen to port
 
