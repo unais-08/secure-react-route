@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 const App = () => {
   const [user, setUser] = useState("");
   const navigate = useNavigate();
-  const url = "https://auth-deploy-rf8o.onrender.com/api/auth/check-auth";
+  const url = "https://secure-react-route.onrender.com/api/auth/check-auth";
   useEffect(() => {
     async function checkAuth() {
       const response = await fetch(url, {

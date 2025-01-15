@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, setUser }) => {
   async function logout() {
-    const url = "https://auth-deploy-rf8o.onrender.com/api/auth/logout";
+    const url = "https://secure-react-route.onrender.com/api/auth/logout";
     const response = await fetch(`${url}`, {
       method: "POST",
       credentials: "include",

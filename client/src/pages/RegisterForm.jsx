@@ -7,7 +7,7 @@ const RegisterForm = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const url = "https://auth-deploy-rf8o.onrender.com/api/auth/signup";
+  const url = "https://secure-react-route.onrender.com/api/auth/signup";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

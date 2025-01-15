@@ -5,7 +5,7 @@ const LoginForm = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const url = "https://auth-deploy-rf8o.onrender.com/api/auth/login";
+  const url = "https://secure-react-route.onrender.com/api/auth/login";
   const handleSubmit = async (e) => {
     e.preventDefault();
     async function loginUser() {
