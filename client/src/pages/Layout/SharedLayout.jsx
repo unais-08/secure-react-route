@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "../../components/index";
-const SharedLayout = ({user ,setUser}) => {
+
+const SharedLayout = () => {
   return (
     <>
-      <Navbar user={user} setUser={setUser}/>
+      <Navbar />
       <Outlet />
     </>
   );

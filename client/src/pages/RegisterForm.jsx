@@ -1,40 +1,35 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { showToast } from "../utils/toastUtils";
+import { Spinner } from "../components";
+const RegisterForm = () => {
+  const { registerUser } = useContext(AuthContext);
 
-const RegisterForm = ({ setUser }) => {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const url = "https://secure-react-route.onrender.com/api/auth/signup";
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    async function registerUser() {
-      const response = await fetch(`${url}`, {
-        method: "POST",
-        credentials: "include",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setUser(data.data.name);
-        navigate("/dashboard");
-      }
+    if (!name || !password || !email) {
+      return showToast("All fields are required", "error");
     }
-    if (!name || !email) return;
 
-    await registerUser();
+    setIsLoading(true);
+
+    try {
+      const result = await registerUser({ name, email, password });
+
+      showToast(result);
+    } catch (error) {
+      showToast(result);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <section className="flex justify-center items-center py-8 w-[90vw] max-w-[1120px] mx-auto">
       <form
@@ -91,9 +86,10 @@ const RegisterForm = ({ setUser }) => {
         </div>
         <button
           type="submit"
-          className="w-full bg-[#645cff] text-white rounded-md p-2.5 text-sm capitalize tracking-wide shadow-sm transition duration-300 hover:bg-[#3c3799] hover:shadow-md"
+          className="w-full bg-[#645cff] text-white rounded-md p-2.5 text-sm capitalize tracking-wide shadow-sm transition duration-300 hover:bg-[#3c3799] hover:shadow-md flex justify-center items-center"
+          disabled={isLoading}
         >
-          login
+          {isLoading ? <Spinner /> : "Register"}
         </button>
       </form>
     </section>

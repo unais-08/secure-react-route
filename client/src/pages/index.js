@@ -6,6 +6,7 @@ import SingleProduct from "./SingleProduct";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import ProtectedRoute from "./Layout/ProtectedRoute";
+import GuestRoute from "./Layout/GuestRoute";
 import SharedLayout from "./Layout/SharedLayout";
 import SharedLayoutProduct from "./Layout/SharedLayoutProduct";
 export {
@@ -17,6 +18,7 @@ export {
   RegisterForm,
   LoginForm,
   ProtectedRoute,
+  GuestRoute,
   SharedLayout,
   SharedLayoutProduct,
 };

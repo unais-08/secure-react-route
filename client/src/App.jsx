@@ -10,75 +10,108 @@ import {
   SingleProduct,
   RegisterForm,
   LoginForm,
+  GuestRoute,
 } from "./pages";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { AuthContext } from "./context/AuthContext";
+import Spinner from "./components/Spinner"; // Import your spinner component
 
 const App = () => {
-  const [user, setUser] = useState("");
-  const navigate = useNavigate();
-  const url = "https://secure-react-route.onrender.com/api/auth/check-auth";
-  useEffect(() => {
-    async function checkAuth() {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
+  const { loggedUser } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
-      if (data.success) {
-        setUser(data.data.name);
-        navigate("/dashboard");
+  useEffect(() => {
+    const checkLoggedInUser = async () => {
+      setIsLoading(true);
+      try {
+        const result = await loggedUser();
+        console.log(result);
+      } catch (error) {
+        console.error("Error checking logged in user:", error);
+      } finally {
+        setIsLoading(false);
       }
-      console.log("Auth check failed");
-    }
-    checkAuth();
+    };
+    checkLoggedInUser();
   }, []);
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spinner /> {/* Render the spinner while loading */}
+      </div>
+    );
+  }
 
   return (
-    <Routes>
-      <Route path="/" element={<SharedLayout user={user} setUser={setUser} />}>
-        <Route
-          index
-          element={
-            <ProtectedRoute user={user}>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="register" element={<RegisterForm setUser={setUser} />} />
-        <Route path="login" element={<LoginForm setUser={setUser} />} />
-
-        <Route
-          path="dashboard"
-          element={
-            <ProtectedRoute user={user}>
-              <Dashboard user={user} />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="products" element={<SharedLayoutProduct />}>
+    <>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
           <Route
             index
             element={
-              <ProtectedRoute user={user}>
-                <Products />
+              <ProtectedRoute>
+                <Home />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <GuestRoute>
+                <RegisterForm />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <GuestRoute>
+                <LoginForm />
+              </GuestRoute>
             }
           />
 
           <Route
-            path=":productId"
+            path="dashboard"
             element={
-              <ProtectedRoute user={user}>
-                <SingleProduct />
+              <ProtectedRoute>
+                <Dashboard />
               </ProtectedRoute>
             }
           />
-        </Route>
+          <Route path="products" element={<SharedLayoutProduct />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route path="*" element={<Error />} />
-      </Route>
-    </Routes>
+            <Route
+              path=":productId"
+              element={
+                <ProtectedRoute>
+                  <SingleProduct />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          <Route path="*" element={<Error />} />
+        </Route>
+      </Routes>
+      <Toaster />
+    </>
   );
 };
 

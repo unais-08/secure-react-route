@@ -1,20 +1,22 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { showToast } from "../utils/toastUtils";
 
-const Navbar = ({ user, setUser }) => {
-  async function logout() {
-    const url = "https://secure-react-route.onrender.com/api/auth/logout";
-    const response = await fetch(`${url}`, {
-      method: "POST",
-      credentials: "include",
-    });
-    const data = await response.json();
-    console.log(data);
-    if (data.success) {
-      setUser(data.data);
-      // navigate("/dashboard");
+const Navbar = () => {
+  const { user, logoutUser } = useContext(AuthContext);
+  const handleLogout = async () => {
+    try {
+      const result = await logoutUser();
+      if (result.success) {
+        showToast(result);
+      } else {
+        showToast({ message: "Logout failed", type: "error" });
+      }
+    } catch (error) {
+      showToast({ message: "An error occurred during logout", type: "error" });
     }
-  }
-  const navigate = useNavigate();
+  };
   return (
     <nav className="flex justify-center items-center p-3 font-mono text-xl">
       {!user ? (
@@ -63,7 +65,10 @@ const Navbar = ({ user, setUser }) => {
             </NavLink>
           </div>
           <div className="mr-5">
-            <button onClick={logout} className="text-red-500 hover:underline">
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:underline"
+            >
               Logout
             </button>
           </div>
